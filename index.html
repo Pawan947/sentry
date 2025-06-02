@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentry | Advanced AI Chatbot with Vision</title>
+    <style>
+        /* Advanced Design Elements */
+        :root {
+            --primary-teal: #14b8a6;
+            --dark-teal: #0f766e;
+            --black: #1a1a1a;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --accent-teal: #2dd4bf;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --neon-glow: 0 0 10px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3), 0 0 30px rgba(20, 184, 166, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(20, 184, 166, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 0%, var(--black) 100%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            background-color: rgba(26, 26, 26, 0.7);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(20, 184, 166, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            position: relative;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-teal);
+            text-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: var(--light-gray);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(20, 184, 166, 0.1);
+            color: var(--primary-teal);
+            transform: translateY(-3px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary-teal);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+
+        .nav-links a:hover::after {
+            width: 70%;
+            opacity: 1;
+        }
+
+        header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background: linear-gradient(45deg, var(--black), var(--dark-teal));
+        }
+
+        .hero {
+            min-height: 90vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(20, 184, 166, 0.2));
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at center, rgba(20, 184, 166, 0.1) 0%, transparent 70%),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%2314b8a6' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            pointer-events: none;
+            animation: bg-animation 60s linear infinite;
+        }
+
+        @keyframes bg-animation {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-teal);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--light-gray);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background-color: var(--primary-teal);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin: 1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.4);
+        }
+
+        .features {
+            padding: 4rem 0;
+            background-color: rgba(20, 184, 166, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: var(--light-gray);
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-teal), transparent);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card, .download-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: grab;
+            padding: 2rem;
+            transform-origin: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+        }
+
+        .feature-card::before, .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card:hover::before, .download-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card .card-content, .download-card .card-content {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            backface-visibility: hidden;
+        }
+
+        .feature-card h3, .download-card h3 {
+            color: var(--primary-teal);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transform: translateZ(20px);
+        }
+
+        .feature-card p, .download-card p {
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            transform: translateZ(15px);
+        }
+
+        .feature-list {
+            text-align: left;
+            margin-top: 1rem;
+            transform: translateZ(10px);
+        }
+
+        .feature-icon {
+            position: relative;
+            display: inline-block;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: float 6s ease-in-out infinite, rotate3d 15s linear infinite;
+            text-shadow: var(--neon-glow);
+            font-size: 2.5rem;
+            color: var(--primary-teal);
+            margin-bottom: 1rem;
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            50% { transform: rotateY(180deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(0deg); }
+        }
+
+        .feature-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--primary-teal);
+            font-weight: bold;
+        }
+
+        .demo-section {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: var(--dark-gray);
+        }
+
+        .demo-video {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .demo-video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .download-section {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: var(--dark-gray);
+        }
+
+        .download-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .download-card {
+            max-width: 400px;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background-color: var(--primary-teal);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin: 1rem 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .download-button:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.4);
+        }
+
+        .version-info {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .download-note {
+            margin-top: 2rem;
+            color: var(--light-gray);
+        }
+
+        .contact-section {
+            background-color: rgba(20, 184, 166, 0.05);
+            padding: 6rem 0;
+        }
+
+        .activation-info {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .activation-info p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-teal), var(--dark-teal));
+            color: white;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            border: none;
+            box-shadow: 0 6px 20px rgba(15, 118, 110, 0.4);
+            z-index: 1;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(15, 118, 110, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
+        .activation-steps {
+            margin-top: 2rem;
+            text-align: left;
+            padding: 0 1rem;
+        }
+
+        .activation-steps li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activation-steps li::before {
+            content: "✓";
+            color: var(--primary-teal);
+            font-weight: bold;
+        }
+
+        /* Additional sophisticated styles */
+        .reveal-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-animation.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            transition-delay: calc(var(--item-index) * 0.1s);
+        }
+
+        .parallax-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+
+        .nav-scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary-teal), #5eead4, #14b8a6, #0f766e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientAnimation 8s ease infinite;
+            background-size: 300% 300%;
+            text-shadow: none;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary-teal);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .cta-button::before, .download-button::before, .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before, .download-button:hover::before, .social-link:hover::before {
+            left: 100%;
+        }
+
+        /* Custom Scroll Bar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary-teal), var(--dark-teal));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-teal);
+        }
+
+        /* Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor, .custom-cursor-dot {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s, opacity 0.3s ease;
+        }
+
+        .custom-cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(20, 184, 166, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border 0.3s;
+        }
+
+        .custom-cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-teal);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        a:hover ~ .custom-cursor, button:hover ~ .custom-cursor, 
+        .feature-card:hover ~ .custom-cursor, .download-button:hover ~ .custom-cursor {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(20, 184, 166, 0.5);
+            background-color: rgba(20, 184, 166, 0.1);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .bar {
+            height: 3px;
+            width: 100%;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(26, 26, 26, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.5s ease;
+                z-index: 999;
+                border-left: 1px solid rgba(20, 184, 166, 0.2);
+            }
+
+            .nav-links.active {
+                right: 0;
+                display: flex;
+            }
+
+            .mobile-menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+                background-color: var(--primary-teal);
+            }
+
+            .mobile-menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+                background-color: var(--primary-teal);
+            }
+        }
+
+        /* Professional UI Elements */
+        .professional-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: var(--primary-teal);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="dynamic-bg" id="dynamicBg"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="custom-cursor-dot" id="customCursorDot"></div>
+
+    <nav id="navbar" aria-label="Main navigation">
+        <div class="container nav-content">
+            <div class="logo"><span class="highlight-text">S</span>entry</div>
+            <div class="nav-links" aria-label="Navigation links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="#download" class="nav-link">Download</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </button>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1 class="gradient-text reveal-animation">Sentry</h1>
+            <p class="subtitle reveal-animation" style="transition-delay: 0.2s;">Advanced AI Chatbot with Vision</p>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="parallax-bg" id="parallaxBg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="reveal-animation">Intelligent Conversations & Vision</h2>
+                <p class="subtitle reveal-animation" style="transition-delay: 0.2s;">Engage with Sentry's advanced chat and vision processing capabilities</p>
+                <a href="#download" class="cta-button reveal-animation" style="transition-delay: 0.3s;" aria-label="Get started with Sentry">
+                    <span class="button-text">Get Started</span>
+                    <span class="button-icon">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key Features</h2>
+                <p>Discover the power of Sentry's AI-driven capabilities</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="professional-badge">Advanced</div>
+                    <div class="card-content">
+                        <div class="feature-icon">💬</div>
+                        <h3>Conversational AI</h3>
+                        <p>Engage in natural, context-aware conversations</p>
+                        <ul class="feature-list">
+                            <li>Multi-turn dialogue</li>
+                            <li>Context retention</li>
+                            <li>Personalized responses</li>
+                            <li>Multilingual support</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="professional-badge">Vision</div>
+                    <div class="card-content">
+                        <div class="feature-icon">👁️</div>
+                        <h3>Vision Processing</h3>
+                        <p>Analyze and interpret visual data with precision</p>
+                        <ul class="feature-list">
+                            <li>Image recognition</li>
+                            <li>Object detection</li>
+                            <li>Text extraction</li>
+                            <li>Scene understanding</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="professional-badge">Premium</div>
+                    <div class="card-content">
+                        <div class="feature-icon">🖥️</div>
+                        <h3>Interactive Interface</h3>
+                        <p>User-friendly interface for seamless interaction</p>
+                        <ul class="feature-list">
+                            <li>Real-time chat display</li>
+                            <li>Image upload support</li>
+                            <li>Customizable settings</li>
+                            <li>Intuitive controls</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="professional-badge">Enterprise</div>
+                    <div class="card-content">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Smart Integration</h3>
+                        <p>Integrate with various platforms and APIs</p>
+                        <ul class="feature-list">
+                            <li>API connectivity</li>
+                            <li>Cross-platform support</li>
+                            <li>Secure data handling</li>
+                            <li>Extensible architecture</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>See Sentry in Action</h2>
+                <p>Watch our demo video to explore Sentry's capabilities</p>
+            </div>
+            <div class="demo-video">
+                <!-- Placeholder: Replace with a valid YouTube video embed URL -->
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Sentry Demo Video"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" class="download-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Download Now</h2>
+                <p>Get started with Sentry for Windows</p>
+            </div>
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="professional-badge">Official Release</div>
+                    <div class="card-content">
+                        <div class="feature-icon">🖥️</div>
+                        <h3>Windows Version</h3>
+                        <ul class="feature-list">
+                            <li>Windows 10 & 11 Compatible</li>
+                            <li>Easy Installation</li>
+                            <li>Automatic Updates</li>
+                            <li>Local Processing for Security</li>
+                            <li>Full Feature Support</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <a href="#" class="download-button" onclick="downloadSoftware()" aria-label="Download Sentry for Windows">
+                                <span class="button-icon">⬇️</span>
+                                <span class="button-text">Download for Windows</span>
+                            </a>
+                            <p class="version-info">Version 1.0.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="download-note">
+                <p>🔒 Secure Download • No Data Collection • Local Processing Only</p>
+                <p style="margin-top: 10px; color: #888;">Currently available for Windows only</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Free Trial Until 10 May 2025</h2>
+                <p>For any feature issues or feedback, feel free to contact us</p>
+            </div>
+            <div class="activation-info">
+                <p>Stay updated with Sentry's latest developments</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/pawan_.387?igsh=MWdtNjV6NXM1YjlrMQ==" target="_blank" class="social-link" aria-label="Follow us on Instagram">
+                        <span class="social-icon">📸</span>
+                        <span>Contact</span>
+                    </a>
+                </div>
+                <div class="activation-steps">
+                    <ul style="list-style: none;">
+                        <li>Follow our Instagram account for updates</li>
+                        <li>Join our community for support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Custom cursor effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('customCursor');
+            const cursorDot = document.getElementById('customCursorDot');
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+            });
+
+            document.addEventListener('mousedown', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            });
+
+            document.addEventListener('mouseup', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+
+            document.querySelectorAll('a, button, .feature-card, .download-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursor.style.backgroundColor = 'rgba(20, 184, 166, 0.1)';
+                    cursor.style.borderColor = 'rgba(20, 184, 166, 0.5)';
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursor.style.backgroundColor = 'transparent';
+                    cursor.style.borderColor = 'rgba(20, 184, 166, 0.8)';
+                });
+            });
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animations on scroll
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-animation').forEach((el) => {
+            revealObserver.observe(el);
+        });
+
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transitionDelay = `${index * 0.1}s`;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card, .download-card').forEach((el, index) => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s cubic-bezier(0.5, 0, 0, 1)';
+            el.setAttribute('data-index', index);
+            staggerObserver.observe(el);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const parallaxElements = document.querySelectorAll('.parallax-bg');
+
+            parallaxElements.forEach(el => {
+                const speed = el.getAttribute('data-speed') || 0.5;
+                el.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+
+            document.querySelectorAll('section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                    const bg = section.querySelector('.parallax-bg');
+                    if (bg) {
+                        bg.style.transform = `translateY(${scrollProgress * 50}px)`;
+                    }
+                }
+            });
+        });
+
+        // Dynamic background particles
+        const dynamicBg = document.getElementById('dynamicBg');
+        if (dynamicBg) {
+            const maxParticles = 15;
+            let particleCount = 0;
+
+            const createParticle = () => {
+                if (particleCount >= maxParticles) return;
+
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                const size = Math.random() * 45 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+
+                particle.style.opacity = Math.random() * 0.3 + 0.1;
+
+                const duration = Math.random() * 40 + 20;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `-${Math.random() * 40}s`;
+
+                dynamicBg.appendChild(particle);
+                particleCount++;
+
+                setTimeout(() => {
+                    particle.remove();
+                    particleCount--;
+                }, duration * 1000);
+            };
+
+            for (let i = 0; i < maxParticles; i++) {
+                createParticle();
+            }
+
+            setInterval(createParticle, 2000);
+        }
+
+        // 3D tilt effect for cards
+        document.querySelectorAll('.feature-card, .download-card').forEach(card => {
+            let isDragging = false;
+            let startX, startY;
+            let startRotateX = 0, startRotateY = 0;
+            let currentRotateX = 0, currentRotateY = 0;
+            const maxRotation = 15;
+
+            card.addEventListener('mousemove', (e) => {
+                if (isDragging) return;
+
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const xPercent = (x / rect.width - 0.5) * 20;
+                const yPercent = (y / rect.height - 0.5) * 20;
+
+                const glarePos = `${x / rect.width * 100}% ${y / rect.height * 100}%`;
+                card.style.backgroundImage = `radial-gradient(circle at ${glarePos}, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 80%)`;
+
+                card.style.transform = `perspective(1000px) rotateX(${-yPercent}deg) rotateY(${xPercent}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.boxShadow = `
+                    ${xPercent * 0.5}px ${yPercent * 0.5}px 30px rgba(20, 184, 166, 0.2), 
+                    0 10px 20px rgba(0, 0, 0, 0.2)
+                `;
+            });
+
+            card.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                card.style.cursor = 'grabbing';
+                startX = e.clientX;
+                startY = e.clientY;
+
+                const transform = card.style.transform;
+                const rotateXMatch = transform.match(/rotateX\(([^)]+)\)/);
+                const rotateYMatch = transform.match(/rotateY\(([^)]+)\)/);
+
+                startRotateX = rotateXMatch ? parseFloat(rotateXMatch[1]) : 0;
+                startRotateY = rotateYMatch ? parseFloat(rotateYMatch[1]) : 0;
+                currentRotateX = startRotateX;
+                currentRotateY = startRotateY;
+
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                currentRotateY = startRotateY + (dx * 0.5);
+                currentRotateX = startRotateX - (dy * 0.5);
+
+                currentRotateX = Math.max(-maxRotation, Math.min(maxRotation, currentRotateX));
+
+                card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    card.style.cursor = 'grab';
+                    card.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.8s';
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    card.style.boxShadow = 'var(--glass-shadow)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+                    }, 800);
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                if (!isDragging) {
+                    card.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.8s';
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    card.style.boxShadow = 'var(--glass-shadow)';
+                    card.style.backgroundImage = 'none';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+                    }, 800);
+                }
+            });
+
+            card.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+
+                const transform = card.style.transform;
+                const rotateXMatch = transform.match(/rotateX\(([^)]+)\)/);
+                const rotateYMatch = transform.match(/rotateY\(([^)]+)\)/);
+
+                startRotateX = rotateXMatch ? parseFloat(rotateXMatch[1]) : 0;
+                startRotateY = rotateYMatch ? parseFloat(rotateYMatch[1]) : 0;
+                currentRotateX = startRotateX;
+                currentRotateY = startRotateY;
+
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+
+                const dx = e.touches[0].clientX - startX;
+                const dy = e.touches[0].clientY - startY;
+
+                currentRotateY = startRotateY + (dx * 0.5);
+                currentRotateX = startRotateX - (dy * 0.5);
+
+                currentRotateX = Math.max(-maxRotation, Math.min(maxRotation, currentRotateX));
+
+                card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            document.addEventListener('touchend', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    card.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.8s';
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    card.style.boxShadow = 'var(--glass-shadow)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+                    }, 800);
+                }
+            });
+        });
+
+        // Download functionality
+        function downloadSoftware() {
+            alert('Please visit our official site or contact us via Instagram for the latest download link.');
+            // Optionally redirect to Instagram for updates
+            const instagramUrl = "https://www.instagram.com/pawan_.387?igsh=MWdtNjV6NXM1YjlrMQ==";
+            window.open(instagramUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
